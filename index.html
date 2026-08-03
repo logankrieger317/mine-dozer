@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#171326" />
+  <title>Quarry Crusher MVP</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hud">
+      <div>
+        <div class="eyebrow">QUARRY 01</div>
+        <h1>Quarry Crusher</h1>
+      </div>
+      <div class="coins" aria-live="polite">
+        <span class="coin-icon">●</span>
+        <span id="coinCount">0</span>
+      </div>
+    </header>
+
+    <section class="game-wrap">
+      <canvas id="game" width="900" height="1400" aria-label="Quarry Crusher game canvas"></canvas>
+
+      <div class="top-actions">
+        <button id="pauseBtn" class="icon-btn" aria-label="Pause game">Ⅱ</button>
+      </div>
+
+      <div id="message" class="message">Push stones into the crusher</div>
+
+      <div class="controls" aria-label="Touch controls">
+        <div id="joystick" class="joystick">
+          <div id="stick" class="stick"></div>
+        </div>
+        <button id="boostBtn" class="boost-btn">
+          <span>BOOST</span>
+          <small id="boostMeter">READY</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="eyebrow">GARAGE</div>
+          <h2>Upgrades</h2>
+        </div>
+        <button id="resetBtn" class="text-btn">Reset save</button>
+      </div>
+
+      <div class="upgrade-grid">
+        <button class="upgrade-card" data-upgrade="power">
+          <div class="upgrade-icon">⚙</div>
+          <div class="upgrade-copy">
+            <strong>Engine Power</strong>
+            <span id="powerDesc">Push heavier stones</span>
+          </div>
+          <div class="upgrade-price"><span id="powerLevel">Lv. 1</span><b id="powerCost">25</b></div>
+        </button>
+
+        <button class="upgrade-card" data-upgrade="speed">
+          <div class="upgrade-icon">➤</div>
+          <div class="upgrade-copy">
+            <strong>Drive Speed</strong>
+            <span id="speedDesc">Move around faster</span>
+          </div>
+          <div class="upgrade-price"><span id="speedLevel">Lv. 1</span><b id="speedCost">30</b></div>
+        </button>
+
+        <button class="upgrade-card" data-upgrade="value">
+          <div class="upgrade-icon">✦</div>
+          <div class="upgrade-copy">
+            <strong>Crusher Value</strong>
+            <span id="valueDesc">Earn more per stone</span>
+          </div>
+          <div class="upgrade-price"><span id="valueLevel">Lv. 1</span><b id="valueCost">40</b></div>
+        </button>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-copy">
+          <span id="nextUnlockLabel">Next unlock: Medium stones</span>
+          <b id="progressText">0 / 100 coins</b>
+        </div>
+        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="pauseOverlay" class="overlay hidden">
+    <div class="modal">
+      <div class="eyebrow">GAME PAUSED</div>
+      <h2>Take five.</h2>
+      <p>Your quarry will be exactly as chaotic when you return.</p>
+      <button id="resumeBtn" class="primary-btn">Resume</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
