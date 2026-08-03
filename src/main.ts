@@ -31,6 +31,7 @@ const boost=$<HTMLButtonElement>('#boost');boost.onpointerdown=()=>input.boost=t
 
 class Quarry extends Phaser.Scene{
   player!:Phaser.Physics.Arcade.Image; rocks!:Phaser.Physics.Arcade.Group; cursors!:Phaser.Types.Input.Keyboard.CursorKeys; keys!:Record<string,Phaser.Input.Keyboard.Key>; crusher!:Phaser.GameObjects.Zone; spawnTimer=0;
+  readonly targetRockCount=10;
   create(){
     const w=520,h=940;
     this.cameras.main.setBackgroundColor('#374634');
@@ -44,16 +45,34 @@ class Quarry extends Phaser.Scene{
     this.player.body.setSize(54,72);
     this.rocks=this.physics.add.group({collideWorldBounds:true});
     this.physics.add.collider(this.rocks,this.rocks);
-    this.physics.add.collider(this.player,this.rocks,(_,obj)=>{const rock=obj as Phaser.Physics.Arcade.Image;const body=rock.body as Phaser.Physics.Arcade.Body;const pv=this.player.body.velocity;const factor=.38+state.power*.12;body.velocity.x+=pv.x*factor;body.velocity.y+=pv.y*factor;});
+    this.physics.add.collider(this.player,this.rocks,(_,obj)=>{const rock=obj as Phaser.Physics.Arcade.Image;if(rock.getData('crushing'))return;const body=rock.body as Phaser.Physics.Arcade.Body;const pv=this.player.body.velocity;const factor=.38+state.power*.12;body.velocity.x+=pv.x*factor;body.velocity.y+=pv.y*factor;});
     this.physics.add.overlap(this.rocks,this.crusher,(_,obj)=>this.crush(obj as Phaser.Physics.Arcade.Image));
     this.cursors=this.input.keyboard!.createCursorKeys();this.keys=this.input.keyboard!.addKeys('W,A,S,D') as Record<string,Phaser.Input.Keyboard.Key>;
-    for(let i=0;i<10;i++)this.spawnRock();
+    for(let i=0;i<this.targetRockCount;i++)this.spawnRock();
   }
   makeTextures(){const d=this.add.graphics();d.fillStyle(0xf1b52f).fillRoundedRect(4,12,56,56,10).fillStyle(0x272431).fillRect(10,4,38,24).fillStyle(0x171421).fillRect(0,18,8,46).fillRect(56,18,8,46).fillStyle(0xffd45a).fillRect(18,0,22,10);d.generateTexture('dozer',64,72);d.destroy();
     const r=this.add.graphics();r.fillStyle(0x8b8d92).fillCircle(22,22,21).fillStyle(0xa8abb0,.7).fillCircle(15,14,8);r.generateTexture('rock',44,44);r.clear().fillStyle(0xc79a35).fillCircle(27,27,26).fillStyle(0xffd35b,.75).fillCircle(18,16,9);r.generateTexture('gold',54,54);r.destroy();}
-  spawnRock(){const rare=state.earned>250&&Math.random()<.16;const key=rare?'gold':'rock';const rock=this.rocks.create(Phaser.Math.Between(45,475),Phaser.Math.Between(240,610),key) as Phaser.Physics.Arcade.Image;rock.setCircle(rare?26:21).setDrag(190).setBounce(.22).setData('value',rare?18:5).setData('heavy',rare?2:1);}
-  crush(rock:Phaser.Physics.Arcade.Image){if(!rock.active)return;const base=rock.getData('value') as number;const payout=Math.round(base*(1+(state.value-1)*.28));state.coins+=payout;state.earned+=payout;syncUI();this.tweens.add({targets:rock,scale:0,angle:180,duration:180,onComplete:()=>rock.destroy()});const txt=this.add.text(rock.x,rock.y,`+${payout}`,{fontSize:'24px',fontStyle:'bold',color:'#ffdc63'}).setOrigin(.5).setDepth(9);this.tweens.add({targets:txt,y:rock.y-55,alpha:0,duration:700,onComplete:()=>txt.destroy()});this.cameras.main.shake(80,.004);this.time.delayedCall(450,()=>this.spawnRock());}
-  update(_:number,delta:number){let x=input.x,y=input.y;if(this.cursors.left.isDown||this.keys.A.isDown)x=-1;if(this.cursors.right.isDown||this.keys.D.isDown)x=1;if(this.cursors.up.isDown||this.keys.W.isDown)y=-1;if(this.cursors.down.isDown||this.keys.S.isDown)y=1;const len=Math.hypot(x,y)||1;const boostMul=input.boost?1.65:1;const speed=(125+state.speed*18)*boostMul;this.player.setVelocity(x/len*speed,y/len*speed);if(Math.abs(x)+Math.abs(y)>.1)this.player.setRotation(Math.atan2(y,x)+Math.PI/2);this.spawnTimer+=delta;if(this.spawnTimer>5000&&this.rocks.countActive(true)<12){this.spawnTimer=0;this.spawnRock()}}
+  spawnRock(){
+    if(this.rocks.countActive(true)>=this.targetRockCount)return;
+    const rare=state.earned>250&&Math.random()<.16;
+    const key=rare?'gold':'rock';
+    const rock=this.rocks.create(Phaser.Math.Between(45,475),Phaser.Math.Between(260,610),key) as Phaser.Physics.Arcade.Image;
+    rock.setCircle(rare?26:21).setDrag(260).setBounce(.12).setVelocity(0,0).setData('value',rare?18:5).setData('heavy',rare?2:1).setData('crushing',false);
+  }
+  crush(rock:Phaser.Physics.Arcade.Image){
+    if(!rock.active||rock.getData('crushing'))return;
+    rock.setData('crushing',true);
+    const x=rock.x,y=rock.y;
+    const base=rock.getData('value') as number;
+    const payout=Math.round(base*(1+(state.value-1)*.28));
+    rock.disableBody(true,true);
+    state.coins+=payout;state.earned+=payout;syncUI();
+    const txt=this.add.text(x,y,`+${payout}`,{fontSize:'24px',fontStyle:'bold',color:'#ffdc63'}).setOrigin(.5).setDepth(9);
+    this.tweens.add({targets:txt,y:y-55,alpha:0,duration:700,onComplete:()=>txt.destroy()});
+    this.cameras.main.shake(80,.004);
+    this.time.delayedCall(500,()=>this.spawnRock());
+  }
+  update(_:number,delta:number){let x=input.x,y=input.y;if(this.cursors.left.isDown||this.keys.A.isDown)x=-1;if(this.cursors.right.isDown||this.keys.D.isDown)x=1;if(this.cursors.up.isDown||this.keys.W.isDown)y=-1;if(this.cursors.down.isDown||this.keys.S.isDown)y=1;const len=Math.hypot(x,y)||1;const boostMul=input.boost?1.65:1;const speed=(125+state.speed*18)*boostMul;this.player.setVelocity(x/len*speed,y/len*speed);if(Math.abs(x)+Math.abs(y)>.1)this.player.setRotation(Math.atan2(y,x)+Math.PI/2);this.spawnTimer+=delta;if(this.spawnTimer>3000){this.spawnTimer=0;while(this.rocks.countActive(true)<this.targetRockCount)this.spawnRock()}}
 }
 
 new Phaser.Game({type:Phaser.AUTO,parent:'game',width:520,height:940,backgroundColor:'#374634',physics:{default:'arcade',arcade:{gravity:{x:0,y:0},debug:false}},scene:[Quarry],scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH}});
