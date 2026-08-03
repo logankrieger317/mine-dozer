@@ -6,7 +6,7 @@ type Save={coins:number;earned:number;power:number;speed:number;value:number;sco
 type Level={name:string;count:number;unlock:number;rockValue:number;goldChance:number;color:number};
 const LEVELS:Level[]=[
   {name:'Gravel Pit',count:10,unlock:0,rockValue:5,goldChance:0,color:0x2c3729},
-  {name:'Granite Cut',count:14,unlock:125,rockValue:11,goldChance:.12,color:0x3c4145},
+  {name:'Granite Cut',count:14,unlock:50,rockValue:11,goldChance:.12,color:0x3c4145},
   {name:'Gold Ridge',count:18,unlock:400,rockValue:22,goldChance:.28,color:0x4b3d29},
   {name:'Crystal Basin',count:22,unlock:1100,rockValue:45,goldChance:.42,color:0x263f46}
 ];
