@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#11100e" />
+    <title>Frontier Arcade</title>
+    <style>
+      *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#fff;background:radial-gradient(circle at top,#46351f 0,#19150f 42%,#090908 100%)}body{min-height:100vh;display:grid;place-items:center;padding:28px}.shell{width:min(980px,100%)}.eyebrow{text-transform:uppercase;letter-spacing:.18em;font-size:12px;color:#f0bf5c;font-weight:800}.title{font-size:clamp(38px,8vw,76px);line-height:.95;margin:8px 0 12px;text-shadow:0 5px 0 #3a220b,0 12px 28px #000}.subtitle{max-width:700px;color:#d8cdbd;font-size:17px;line-height:1.6;margin-bottom:28px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.card{position:relative;overflow:hidden;min-height:360px;border-radius:28px;border:1px solid #ffffff2b;text-decoration:none;color:white;padding:28px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 22px 55px #0009;transition:transform .18s ease,border-color .18s ease}.card:hover{transform:translateY(-5px);border-color:#ffd36a}.card:before,.card:after{content:"";position:absolute;inset:0;pointer-events:none}.card:after{background:linear-gradient(transparent 20%,#000000db 88%)}.card>*{position:relative;z-index:2}.dozer{background:linear-gradient(145deg,#81552a,#2f4b2f)}.dozer:before{background:radial-gradient(circle at 68% 28%,#ffc62b 0 5%,transparent 6%),linear-gradient(30deg,transparent 0 49%,#ffffff0c 50% 51%,transparent 52%),repeating-linear-gradient(0deg,#0000 0 34px,#ffffff0c 35px 37px)}.trail{background:linear-gradient(150deg,#9e622f,#2d4d50)}.trail:before{background:radial-gradient(circle at 70% 22%,#ffd784 0 7%,transparent 8%),linear-gradient(165deg,transparent 0 44%,#d5b27a55 45% 52%,transparent 53%),repeating-linear-gradient(90deg,#0000 0 64px,#ffffff0b 65px 67px)}.tag{display:inline-flex;width:max-content;padding:7px 10px;border-radius:999px;background:#0009;border:1px solid #ffffff28;font-size:11px;font-weight:900;letter-spacing:.08em}.card h2{font-size:34px;margin:12px 0 8px}.card p{color:#e6ded2;line-height:1.5;margin:0 0 18px}.play{font-weight:950;color:#ffd766}.footer{margin-top:22px;color:#9e9588;font-size:12px;text-align:center}@media(max-width:700px){body{padding:16px}.grid{grid-template-columns:1fr}.card{min-height:310px}.title{font-size:48px}}
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="eyebrow">Logan's browser games</div>
+      <h1 class="title">FRONTIER ARCADE</h1>
+      <p class="subtitle">Choose a game. Progress is saved locally in this browser, so each game can be picked up where you left it.</p>
+      <section class="grid">
+        <a class="card dozer" href="../">
+          <span class="tag">CASUAL ARCADE</span>
+          <h2>Mine Dozer</h2>
+          <p>Explore large quarries, scoop ore, discover treasure, trigger Crusher Fever, and build an absurdly capable bulldozer.</p>
+          <span class="play">Continue mining →</span>
+        </a>
+        <a class="card trail" href="../frontier-trail/">
+          <span class="tag">HISTORICAL JOURNEY</span>
+          <h2>Frontier Trail</h2>
+          <p>Lead an expedition from Boston toward California gold or Texas oil through real landmarks, rivers, disease, weather, and hard choices.</p>
+          <span class="play">Begin the journey →</span>
+        </a>
+      </section>
+      <div class="footer">Both games are hosted from the same GitHub Pages site.</div>
+    </main>
+  </body>
+</html>
