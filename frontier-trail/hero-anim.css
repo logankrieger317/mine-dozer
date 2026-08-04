@@ -1,0 +1,119 @@
+/* Animated travel vignette layered over the existing Frontier Trail scene. */
+.scene{
+  isolation:isolate;
+  min-height:390px;
+  background:#6f5944;
+}
+.scene::before{z-index:1;opacity:.45}
+.scene-ambient{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.scene-ambient>span{position:absolute;display:block}
+.scene .horizon{z-index:1;animation:ft-horizon-drift 24s ease-in-out infinite alternate}
+.scene .road{z-index:2;animation:ft-road-breathe 5s ease-in-out infinite}
+.scene .wagon{z-index:4;animation:ft-wagon-roll 3.2s ease-in-out infinite;transform-origin:50% 100%}
+.scene .wheel{animation:ft-wheel-spin 1.15s linear infinite}
+.scene .scene-copy{z-index:8;padding-top:72px}
+
+.scene[data-biome="forest"]{background:linear-gradient(#778999 0 39%,#887151 39% 57%,#34402e 57%)}
+.scene[data-biome="lake"]{background:linear-gradient(#7796ab 0 39%,#7a8c91 39% 55%,#405257 55% 62%,#2f3329 62%)}
+.scene[data-biome="river"]{background:linear-gradient(#8198a2 0 39%,#85775f 39% 54%,#4d6770 54% 62%,#303428 62%)}
+.scene[data-biome="plains"]{background:linear-gradient(#7fa2ba 0 43%,#b49055 43% 59%,#4e4428 59%)}
+.scene[data-biome="mountains"]{background:linear-gradient(#758b9e 0 36%,#83827d 36% 47%,#4a4840 47% 61%,#282720 61%)}
+.scene[data-biome="desert"]{background:linear-gradient(#c49a69 0 42%,#c99a58 42% 58%,#6d4728 58%)}
+.scene[data-biome="california"]{background:linear-gradient(#84a9c2 0 41%,#b29c62 41% 57%,#3f5d36 57%)}
+.scene[data-biome="texas"]{background:linear-gradient(#87a9bd 0 42%,#b88950 42% 59%,#4f4d2e 59%)}
+.scene[data-biome="gulf"]{background:linear-gradient(#7f979a 0 39%,#71836e 39% 55%,#465c56 55% 62%,#293528 62%)}
+
+.scenic-sun{right:12%;top:10%;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle,#ffe9ad 0 27%,#e9c675 43%,rgba(255,221,139,.14) 68%,transparent 72%);box-shadow:0 0 30px rgba(255,220,143,.55),0 0 90px rgba(255,218,135,.25);animation:ft-sun-float 8s ease-in-out infinite}
+.scene[data-biome="mountains"] .scenic-sun,.scene[data-weather="snow"] .scenic-sun{filter:saturate(.5);opacity:.68}
+.scene[data-weather="storm"] .scenic-sun,.scene[data-weather="fog"] .scenic-sun{opacity:.2}
+
+.scenic-cloud,.scenic-cloud::before,.scenic-cloud::after{height:21px;border-radius:999px;background:rgba(244,235,216,.17)}
+.scenic-cloud{left:-22%;top:18%;width:96px;animation:ft-cloud-drift 28s linear infinite}
+.scenic-cloud::before,.scenic-cloud::after{content:"";position:absolute}
+.scenic-cloud::before{width:54px;left:10px;top:-10px}
+.scenic-cloud::after{width:62px;left:38px;top:4px}
+.cloud-two{top:10%;width:130px;opacity:.72;animation-duration:36s;animation-delay:-11s}
+.cloud-three{top:28%;width:72px;opacity:.48;animation-duration:31s;animation-delay:-20s}
+.scene[data-weather="storm"] .scenic-cloud{background:rgba(48,54,61,.58);opacity:1;filter:blur(.4px)}
+.scene[data-weather="storm"] .scenic-cloud::before,.scene[data-weather="storm"] .scenic-cloud::after{background:rgba(48,54,61,.58)}
+
+.scene[data-biome="forest"] .horizon{background:#243126;clip-path:polygon(0 80%,4% 58%,7% 76%,11% 44%,15% 76%,20% 53%,25% 78%,30% 38%,36% 74%,42% 48%,48% 79%,55% 44%,62% 74%,70% 35%,76% 72%,83% 48%,90% 77%,95% 42%,100% 68%,100% 100%,0 100%)}
+.scene[data-biome="lake"] .horizon,.scene[data-biome="river"] .horizon{bottom:37%;height:26%;background:#2d342e;opacity:.7}
+.scene[data-biome="plains"] .horizon{bottom:35%;height:20%;background:#4f4a32;opacity:.52;clip-path:polygon(0 70%,12% 60%,25% 69%,38% 57%,52% 72%,66% 61%,78% 68%,90% 54%,100% 66%,100% 100%,0 100%)}
+.scene[data-biome="mountains"] .horizon{bottom:27%;height:48%;background:#31333a;opacity:.9;clip-path:polygon(0 78%,8% 61%,16% 73%,27% 20%,38% 72%,50% 40%,61% 76%,74% 12%,85% 60%,94% 30%,100% 68%,100% 100%,0 100%)}
+.scene[data-biome="desert"] .horizon{bottom:32%;height:25%;background:#6c4327;opacity:.48;clip-path:polygon(0 75%,13% 58%,25% 70%,38% 46%,52% 72%,68% 52%,82% 69%,94% 50%,100% 63%,100% 100%,0 100%)}
+.scene[data-biome="california"] .horizon{background:#314c33;opacity:.68}
+.scene[data-biome="texas"] .horizon{bottom:33%;height:23%;background:#44472d;opacity:.58;clip-path:polygon(0 76%,15% 59%,31% 72%,44% 54%,58% 74%,72% 55%,87% 69%,100% 52%,100% 100%,0 100%)}
+.scene[data-biome="gulf"] .horizon{background:#263a31;opacity:.74}
+
+.scenic-prop{bottom:25%;width:54px;height:92px;opacity:.72;filter:drop-shadow(0 8px 6px rgba(0,0,0,.25))}
+.prop-left{left:8%}.prop-right{right:9%;transform:scale(.82)}
+.scene[data-biome="forest"] .scenic-prop,.scene[data-biome="mountains"] .scenic-prop,.scene[data-biome="california"] .scenic-prop{background:linear-gradient(90deg,transparent 43%,#513b25 43% 57%,transparent 57%),linear-gradient(155deg,transparent 38%,#294129 39% 61%,transparent 62%) 50% 12%/100% 38% no-repeat,linear-gradient(155deg,transparent 36%,#314c2d 37% 63%,transparent 64%) 50% 45%/100% 45% no-repeat}
+.scene[data-biome="river"] .scenic-prop,.scene[data-biome="lake"] .scenic-prop,.scene[data-biome="gulf"] .scenic-prop{width:70px;height:66px;background:repeating-linear-gradient(80deg,transparent 0 8px,#596a3e 9px 11px,transparent 12px 17px);clip-path:polygon(0 100%,8% 42%,14% 100%,25% 20%,30% 100%,42% 36%,48% 100%,61% 15%,66% 100%,79% 32%,85% 100%,94% 44%,100% 100%)}
+.scene[data-biome="desert"] .scenic-prop,.scene[data-biome="texas"] .scenic-prop{width:48px;height:88px;background:#49683b;clip-path:polygon(43% 100%,43% 58%,31% 58%,22% 46%,30% 40%,43% 50%,43% 21%,35% 21%,27% 12%,36% 7%,43% 14%,43% 0,57% 0,57% 32%,68% 32%,77% 22%,84% 29%,73% 42%,57% 42%,57% 65%,69% 65%,78% 57%,84% 64%,75% 76%,57% 76%,57% 100%)}
+.scene[data-biome="plains"] .scenic-prop{bottom:27%;width:82px;height:28px;border-radius:50%;background:#77784d;opacity:.52}
+
+.scenic-birds{right:31%;top:23%;width:52px;height:15px;opacity:.5;background:radial-gradient(ellipse at 20% 60%,transparent 52%,#2d2923 54% 61%,transparent 63%),radial-gradient(ellipse at 75% 35%,transparent 52%,#2d2923 54% 61%,transparent 63%);animation:ft-birds 14s linear infinite}
+.scene[data-weather="storm"] .scenic-birds,.scene[data-weather="snow"] .scenic-birds{display:none}
+
+.wagon-horse{position:absolute;left:-76px;bottom:10px;width:52px;height:28px;border-radius:48% 55% 42% 48%;background:#4a2d1b;z-index:1;animation:ft-horse-bob .72s ease-in-out infinite;box-shadow:inset -8px -7px rgba(25,13,7,.18)}
+.horse-head{position:absolute;right:-15px;top:-5px;width:22px;height:18px;border-radius:55% 65% 45% 55%;background:#4a2d1b;transform:rotate(-12deg)}
+.horse-head::before{content:"";position:absolute;right:2px;top:-8px;border-left:4px solid transparent;border-right:2px solid transparent;border-bottom:10px solid #3b2215;transform:rotate(12deg)}
+.horse-head::after{content:"";position:absolute;right:-7px;top:6px;width:12px;height:8px;border-radius:50%;background:#3c2315}
+.horse-leg{position:absolute;bottom:-14px;width:4px;height:18px;border-radius:3px;background:#382014;transform-origin:top center;animation:ft-horse-leg .72s ease-in-out infinite alternate}
+.leg-one{left:8px}.leg-two{left:20px;animation-delay:-.36s}.leg-three{right:15px;animation-delay:-.36s}.leg-four{right:5px}
+.wagon-hitch{position:absolute;left:-54px;bottom:22px;width:70px;height:3px;background:#3c2819;transform:rotate(5deg);transform-origin:right center;z-index:0}
+.wagon-cargo{position:absolute;left:30px;top:33px;width:50px;height:13px;border-radius:7px;background:repeating-linear-gradient(90deg,#6f4324 0 9px,#9a6840 10px 17px);z-index:2;opacity:.86}
+.wagon-patch{display:none;position:absolute;z-index:5;background:#8c7658;border:1px dashed #4e3d2d;transform:rotate(-10deg)}
+.patch-one{left:28px;top:12px;width:18px;height:13px}.patch-two{right:24px;top:26px;width:15px;height:11px;transform:rotate(8deg)}
+.wagon-dust{position:absolute;right:-31px;bottom:3px;width:60px;height:24px;border-radius:50%;background:radial-gradient(ellipse,rgba(190,151,103,.36),transparent 68%);filter:blur(2px);animation:ft-dust-puff 2s ease-out infinite;z-index:-1}
+
+.scene[data-wagon-state="worn"] .wagon-patch.patch-one{display:block}
+.scene[data-wagon-state="damaged"] .wagon-patch{display:block}
+.scene[data-wagon-state="damaged"] .wagon{animation:ft-wagon-roll 4s ease-in-out infinite,ft-wagon-wobble .55s ease-in-out infinite}
+.scene[data-wagon-state="damaged"] .wheel.right{animation:ft-wheel-spin 1.6s linear infinite,ft-wheel-wobble .7s ease-in-out infinite;opacity:.82}
+.scene[data-animal-state="worn"] .wagon-horse{opacity:.82;animation-duration:1s}
+.scene[data-animal-state="damaged"] .wagon-horse{opacity:.65;animation-duration:1.45s;transform:translateY(3px)}
+.scene[data-animal-state="damaged"] .wagon,.scene[data-wagon-state="damaged"] .wagon{filter:drop-shadow(0 10px 8px #0007) saturate(.78)}
+
+.weather-layer{inset:-12%;z-index:6;pointer-events:none;opacity:0;transition:opacity .35s ease}
+.weather-rain{background:repeating-linear-gradient(113deg,transparent 0 20px,rgba(218,231,247,.25) 21px 23px,transparent 24px 48px);animation:ft-rain .72s linear infinite}
+.weather-snow{background-image:radial-gradient(circle,rgba(255,255,255,.88) 0 2px,transparent 3px),radial-gradient(circle,rgba(255,255,255,.65) 0 1.5px,transparent 2.5px);background-size:48px 48px,73px 73px;background-position:0 0,18px 8px;animation:ft-snow 7s linear infinite}
+.weather-fog{background:radial-gradient(ellipse at 18% 60%,rgba(223,229,229,.22),transparent 36%),radial-gradient(ellipse at 65% 55%,rgba(223,229,229,.18),transparent 42%),linear-gradient(rgba(207,218,221,.08),rgba(207,218,221,.12));filter:blur(5px);animation:ft-fog 9s ease-in-out infinite}
+.weather-dust{background:radial-gradient(ellipse at 20% 68%,rgba(226,181,112,.23),transparent 25%),radial-gradient(ellipse at 55% 62%,rgba(226,181,112,.18),transparent 31%),radial-gradient(ellipse at 82% 70%,rgba(226,181,112,.21),transparent 23%);filter:blur(4px);animation:ft-weather-dust 6s ease-in-out infinite}
+.weather-storm{background:rgba(16,20,27,.24);animation:ft-lightning 6.5s steps(1,end) infinite}
+.scene[data-weather="rain"] .weather-rain,.scene[data-weather="snow"] .weather-snow,.scene[data-weather="fog"] .weather-fog,.scene[data-weather="dust"] .weather-dust,.scene[data-weather="storm"] .weather-rain,.scene[data-weather="storm"] .weather-storm{opacity:1}
+.scene[data-weather="wind"] .scenic-cloud{animation-duration:13s}
+.scene[data-weather="snow"] .scene-ambient{filter:saturate(.62) brightness(.92)}
+.scene[data-weather="fog"] .scene-ambient{filter:saturate(.72)}
+
+@keyframes ft-wagon-roll{0%,100%{transform:translateX(-50%) translateY(0) rotate(-.35deg)}25%{transform:translateX(-48%) translateY(-2px) rotate(.25deg)}50%{transform:translateX(-50%) translateY(1px) rotate(-.15deg)}75%{transform:translateX(-52%) translateY(-1px) rotate(.3deg)}}
+@keyframes ft-wheel-spin{to{transform:rotate(360deg)}}
+@keyframes ft-wheel-wobble{0%,100%{scale:1;translate:0 0}50%{scale:.91 1.05;translate:0 3px}}
+@keyframes ft-wagon-wobble{0%,100%{rotate:-1deg}50%{rotate:1.4deg}}
+@keyframes ft-horse-bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-2px) rotate(1deg)}}
+@keyframes ft-horse-leg{from{transform:rotate(-22deg)}to{transform:rotate(24deg)}}
+@keyframes ft-dust-puff{0%{opacity:0;transform:translateX(0) scale(.45)}30%{opacity:.55}100%{opacity:0;transform:translateX(34px) scale(1.35)}}
+@keyframes ft-cloud-drift{from{transform:translateX(0)}to{transform:translateX(145vw)}}
+@keyframes ft-sun-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes ft-birds{from{transform:translateX(0)}to{transform:translateX(-38vw)}}
+@keyframes ft-horizon-drift{from{transform:translateX(-1.2%)}to{transform:translateX(1.2%)}}
+@keyframes ft-road-breathe{0%,100%{opacity:.76;filter:brightness(.9)}50%{opacity:1;filter:brightness(1.1)}}
+@keyframes ft-rain{to{background-position:0 70px}}
+@keyframes ft-snow{from{background-position:0 -80px,18px -60px}to{background-position:42px 160px,-22px 180px}}
+@keyframes ft-fog{0%,100%{transform:translateX(-3%);opacity:.7}50%{transform:translateX(3%);opacity:1}}
+@keyframes ft-weather-dust{0%,100%{transform:translateX(-4%);opacity:.45}50%{transform:translateX(4%);opacity:.85}}
+@keyframes ft-lightning{0%,91%,94%,100%{background:rgba(16,20,27,.24)}92%{background:rgba(232,237,255,.38)}93%{background:rgba(16,20,27,.28)}}
+
+@media(max-width:800px){
+  .scene{min-height:330px}
+  .scene .scene-copy{padding:22px;padding-top:60px}
+  .scenic-sun{width:72px;height:72px}
+  .scenic-prop{transform:scale(.78);transform-origin:bottom center}
+  .prop-right{transform:scale(.65)}
+  .scene .wagon{bottom:17%;scale:.88}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .scene *{animation-duration:.001ms!important;animation-iteration-count:1!important}
+}
