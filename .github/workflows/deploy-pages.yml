@@ -1,4 +1,4 @@
-name: Deploy Mine Dozer to GitHub Pages
+name: Deploy Browser Games to GitHub Pages
 
 on:
   push:
@@ -24,6 +24,11 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run build
+      - name: Add additional games to Pages bundle
+        run: |
+          mkdir -p dist/frontier-trail dist/arcade
+          cp -R frontier-trail/. dist/frontier-trail/
+          cp -R arcade/. dist/arcade/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
